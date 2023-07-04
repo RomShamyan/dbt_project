@@ -1,0 +1,31 @@
+With bing as (
+    select  imps as impressions,
+            conv as total_conversions,
+    * except (imps, conv, ad_description, title_part_1, title_part_2, __insert_date)
+    from {{ ref('src_ads_bing_all_data')}}
+),
+
+facebook as (
+    select  mobile_app_install as installs,
+            inline_link_clicks as link_clicks,
+            complete_registration as registrations,
+            purchase_value as revenue,
+            views as video_views,
+    * except (mobile_app_install, inline_link_clicks, complete_registration, views, purchase_value, creative_title, __insert_date, objective, buying_type, campaign_type, creative_body, clicks_2, comments_2, shares_2, purchase_2, views_2)
+    from {{ ref('src_ads_creative_facebook_all_data')}}
+),
+
+tiktok as (
+    select  adgroup_id as adset_id,
+            rt_installs as installs,
+            conversions as total_conversions,
+    * except (adgroup_id, rt_installs, ad_status, conversions, skan_conversion, skan_app_install, ad_text, __insert_date)
+    from {{ ref('src_ads_tiktok_ads_all_data')}}
+),
+
+twitter as (
+    select url_clicks as link_clicks,
+            video_total_views as video_views,
+    * except (url_clicks, video_total_views, retweets, text, url, __insert_date)
+    from {{ ref('src_promoted_tweets_twitter_all_data')}}
+),
